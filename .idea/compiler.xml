@@ -2,22 +2,26 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="shares" />
         <module name="shares-portal" />
+        <module name="shares-generator" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="shares" target="1.8" />
+      <module name="shares-generator" target="1.8" />
       <module name="shares-portal" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="shares" options="-parameters" />
+      <module name="shares-generator" options="-parameters" />
       <module name="shares-portal" options="-parameters" />
     </option>
   </component>

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/shares.iml" filepath="$PROJECT_DIR$/shares.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shares-generator/shares-generator.iml" filepath="$PROJECT_DIR$/shares-generator/shares-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-portal/shares-portal.iml" filepath="$PROJECT_DIR$/shares-portal/shares-portal.iml" />
     </modules>
   </component>
