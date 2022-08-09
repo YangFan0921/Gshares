@@ -1,4 +1,6 @@
-import com.review.shares.portal.model.Role;
+package com.review.shares.portal.mapper;
+
+import com.review.shares.portal.model.Permission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @since 2022-08-09
  */
 @Repository
-public interface RoleMapper extends BaseMapper<Role> {
+public interface PermissionMapper extends BaseMapper<Permission> {
 
         }

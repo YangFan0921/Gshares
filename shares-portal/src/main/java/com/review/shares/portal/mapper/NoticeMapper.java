@@ -1,4 +1,6 @@
-import com.review.shares.portal.model.Answer;
+package com.review.shares.portal.mapper;
+
+import com.review.shares.portal.model.Notice;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @since 2022-08-09
  */
 @Repository
-public interface AnswerMapper extends BaseMapper<Answer> {
+public interface NoticeMapper extends BaseMapper<Notice> {
 
         }

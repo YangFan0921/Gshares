@@ -1,3 +1,5 @@
+package com.review.shares.portal.mapper;
+
 import com.review.shares.portal.model.UserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;

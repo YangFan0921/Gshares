@@ -1,4 +1,6 @@
-import com.review.shares.portal.model.Question;
+package com.review.shares.portal.mapper;
+
+import com.review.shares.portal.model.Classroom;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @since 2022-08-09
  */
 @Repository
-public interface QuestionMapper extends BaseMapper<Question> {
+public interface ClassroomMapper extends BaseMapper<Classroom> {
 
         }
