@@ -41,7 +41,7 @@ public class CodeGenerator {
     //模块名称，用于组成包名
     public static String modelName = "portal";
     //Mapper接口的模板文件，不用写后缀 .ftl
-    public static String mapperTempalte = "/ftl/mapper.java.ftl";
+    public static String mapperTempalte = "/ftl/mapper.java";
 
     /**
      * <p>
