@@ -16,7 +16,7 @@ class SharesPortalApplicationTests {
         Tag tag = new Tag();
         tag.setName("java");
         System.out.println(tag);
-        tag.record();
+        //tag.record();
     }
 
     @Autowired(required = false)
@@ -27,7 +27,7 @@ class SharesPortalApplicationTests {
         tag.setId(21);
         tag.setName("MyBatis Plus");
         tag.setCreateby("admin");
-        tag.setCreatetime("2022-8-9 16:00:00");
+        //tag.setCreatetime("2022-8-9 16:00:00");
         int insert = tagMapper.insert(tag);
         System.out.println("num:"+insert);
         System.out.println("新增完毕");

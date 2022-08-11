@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
+@Accessors(chain = true) //链式函数的支持
 @TableName("tag")
 public class Tag implements Serializable {
 
