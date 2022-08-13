@@ -34,15 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()  //设置请求限制
                 .antMatchers(     //指定受影响资源
-                        "/index_student.html",
                         "/img/**",   //*当前目录  **当前所有目录
                         "/js/*",
                         "/css/*",
                         "/bower_components/**",
                         "/login.html",
                         "/register.html",
-                        "/register",
-                        "/v1/tags"
+                        "/register"
                 ).permitAll()       //全部允许
                 .anyRequest()
                 //其他请求

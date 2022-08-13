@@ -1,10 +1,17 @@
 package com.review.shares.portal.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.review.shares.portal.exception.ServiceException;
+import com.review.shares.portal.mapper.UserMapper;
 import com.review.shares.portal.model.Question;
 import com.review.shares.portal.mapper.QuestionMapper;
+import com.review.shares.portal.model.User;
 import com.review.shares.portal.service.IQuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +24,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements IQuestionService {
 
+    @Autowired
+    QuestionMapper questionMapper;
+    @Autowired
+    UserMapper userMapper;
+
+    @Override
+    public List<Question> getMyQuestion(String username) {
+        //根据用户名查询用户信息
+        User user = userMapper.findUserByUsername(username);
+        if (user == null){
+            throw new ServiceException("用户不存在");
+        }
+        //根据用户id查询用户的所有问题
+        QueryWrapper<Question> query = new QueryWrapper<>();
+        //条件： 1.user_id为当前登录用户的id
+        query.eq("user_id",user.getId());
+        //      2.查询出的问题不能是被删除的
+        query.eq("delete_status",0);
+        //      3.设置创建时间降序排序
+        query.orderByDesc("createtime");
+        List<Question> list = questionMapper.selectList(query);
+        return list;
+    }
 }
