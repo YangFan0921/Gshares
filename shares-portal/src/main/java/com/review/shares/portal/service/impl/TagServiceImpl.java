@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * <p>
@@ -20,12 +21,22 @@ import java.util.List;
 @Service
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagService {
 
+    //线程安全的List
+    private List<Tag> tags = new CopyOnWriteArrayList<>();
+
     @Autowired
     private TagMapper tagMapper;
 
     @Override
     public List<Tag> getTags() {
-        List<Tag> tags = tagMapper.selectList(null);
+        if (tags.isEmpty()){
+            synchronized (tags) {
+                if(tags.isEmpty()) {
+                    List<Tag> tags = tagMapper.selectList(null);
+                    this.tags.addAll(tags);
+                }
+            }
+        }
         return tags;
     }
 }
