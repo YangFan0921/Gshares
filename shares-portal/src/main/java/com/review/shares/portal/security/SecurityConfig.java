@@ -41,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/bower_components/**",
                         "/login.html",
                         "/register.html",
-                        "/register"
+                        "/register",
+                        "/v1/tags"
                 ).permitAll()       //全部允许
                 .anyRequest()
                 //其他请求

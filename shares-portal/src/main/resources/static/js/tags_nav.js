@@ -9,9 +9,9 @@ let tagsApp = new Vue({
             axios({
                 url:'/v1/tags',
                 method:'GET'
-            }).then(function(r){
-                if(r.status==OK){
-                    tagsApp.tags=r.data;
+            }).then(function(response){
+                if(response.status==OK){
+                    tagsApp.tags=response.data;
                 }
             })
         }

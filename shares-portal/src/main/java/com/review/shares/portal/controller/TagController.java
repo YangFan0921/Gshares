@@ -2,11 +2,16 @@ package com.review.shares.portal.controller;
 
 
 import com.review.shares.portal.model.Tag;
+import com.review.shares.portal.service.ITagService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -22,26 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/tags")
 public class TagController {
 
-    @GetMapping("/hello")
-    public String welcome(){
-        return "Hello World!";
-    }
+    @Autowired
+    private ITagService tagService;
 
-    @GetMapping("/get")
-    //访问需要权限
-    @PreAuthorize("hasAuthority('add')")
-    public Tag getTag(){
-        Tag tag = new Tag();
-        tag.setName("乾坤大挪移");
-        return tag;
-    }
-
-    @GetMapping("/list")
-    @PreAuthorize("hasAuthority('delete')")
-    public Tag getList(){
-        Tag tag = new Tag();
-        tag.setName("降龙十八掌");
-        return tag;
+    @GetMapping("")
+    public List<Tag> tags(){
+        List<Tag> tags = tagService.getTags();
+        return tags;
     }
 
 }
