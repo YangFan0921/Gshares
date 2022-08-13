@@ -29,17 +29,17 @@ let app = new Vue({
                 url:'/register',
                 data:form
             })
-                .then(function(r) {
-                    console.log("|"+r.status+"|"+OK+"|");
-                    if(r.status == OK){
+                .then(function(response) {
+                    console.log("|"+response.status+"|"+OK+"|");
+                    if(response.data == "注册完成！"){
                         console.log("注册成功");
-                        console.log(r.data);
+                        console.log(response.data);
                         app.hasError = false;
                         location.href = '/login.html?register';
                     }else{
-                        console.log(r.data);
+                        console.log(response.data);
                         app.hasError = true;
-                        app.message = r.data;
+                        app.message = response.data;
                     }
                 });
         }
