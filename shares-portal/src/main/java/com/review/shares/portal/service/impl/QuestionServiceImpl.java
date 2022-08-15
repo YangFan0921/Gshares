@@ -5,13 +5,17 @@ import com.review.shares.portal.exception.ServiceException;
 import com.review.shares.portal.mapper.UserMapper;
 import com.review.shares.portal.model.Question;
 import com.review.shares.portal.mapper.QuestionMapper;
+import com.review.shares.portal.model.Tag;
 import com.review.shares.portal.model.User;
 import com.review.shares.portal.service.IQuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.review.shares.portal.service.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -45,6 +49,26 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         //      3.设置创建时间降序排序
         query.orderByDesc("createtime");
         List<Question> list = questionMapper.selectList(query);
+        //为每个问题的标签集合赋值
+        for (Question question : list){
+            List<Tag> tags = tagName2Tags(question.getTagNames());
+            question.setTags(tags);
+        }
         return list;
     }
+
+    @Autowired
+    private ITagService tagService;
+    //标签名称字符串转换为List<Tag>
+    private List<Tag> tagName2Tags(String tagNames){
+        String[] names = tagNames.split(",");
+        List<Tag> tags = new ArrayList<>();
+        Map<String,Tag> tagMap = tagService.getTagMap();
+        //将数组元素对应的tag对象保存至tags集合中
+        for (String key : names){
+            tags.add(tagMap.get(key));
+        }
+        return tags;
+    }
+
 }

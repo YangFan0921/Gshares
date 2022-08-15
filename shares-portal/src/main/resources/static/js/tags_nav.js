@@ -5,7 +5,7 @@ let tagsApp = new Vue({
     },
     methods:{
         loadTags:function () {
-            console.log('执行了 loadTags');
+            // console.log('执行了 loadTags');
             axios({
                 url:'/v1/tags',
                 method:'GET'

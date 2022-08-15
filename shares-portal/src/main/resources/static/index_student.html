@@ -205,7 +205,7 @@
               <div class="row">
                 <div class="col-12 mt-1 text-info">
                   <i class="fa fa-tags" aria-hidden="true"></i>
-                  <a class="text-info badge badge-pill bg-light" href="tag/tag_question.html"><small >Java基础 &nbsp;</small></a>
+                  <a class="text-info badge badge-pill bg-light" href="tag/tag_question.html" v-for="tag in question.tags"><small v-text="tag.name">Java基础 &nbsp;</small></a>
                 </div>
               </div>
               <div class="row">
@@ -213,14 +213,15 @@
                   <div class="list-inline mb-1 ">
                     <small class="list-inline-item" v-text="question.userNickName">风继续吹</small>
                     <small class="list-inline-item"><span v-text="question.pageViews">12</span>浏览</small>
-                    <small class="list-inline-item" >13分钟前</small>
+                    <small class="list-inline-item" v-text="question.duration">13分钟前</small>
                   </div>
                 </div>
               </div>
 
             </div>
             <!-- / class="media-body"-->
-            <img src="img/tags/example0.jpg"  class="ml-3 border img-fluid rounded" alt="" width="208" height="116">
+<!--            <img src="img/tags/example0.jpg"  class="ml-3 border img-fluid rounded" alt="" width="208" height="116">-->
+            <img :src="question.tagImage"  class="ml-3 border img-fluid rounded" alt="" width="208" height="116">
           </div>
           <div class="row mt-2">
             <div class="col-6 offset-3">

@@ -4,6 +4,7 @@ import com.review.shares.portal.model.Tag;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -15,6 +16,11 @@ import java.util.List;
  */
 public interface ITagService extends IService<Tag> {
 
+    //全查所有标签返回List
     List<Tag> getTags();
+
+    //全查所有标签返回Map
+    Map<String,Tag> getTagMap();
+
 
 }

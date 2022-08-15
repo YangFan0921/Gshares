@@ -10,7 +10,7 @@ let questionsApp = new Vue({
     },
     methods: {
         loadQuestions:function (pageNum) {
-            console.log(pageNum)
+            // console.log(pageNum)
             if(! pageNum){
                 pageNum = 1;
             }
@@ -21,8 +21,8 @@ let questionsApp = new Vue({
                     pageNum:pageNum
                 }
             }).then(function(r){
-                console.log("成功加载数据");
-                console.log(r);
+                // console.log("成功加载数据");
+                // console.log(r.data);
                 if(r.status == OK){
                     questionsApp.questions = r.data;
                     //questionsApp.pageinfo = r.data;
@@ -38,7 +38,8 @@ let questionsApp = new Vue({
                let tags = questions[i].tags;
                if(tags){
                    let tagImage = '/img/tags/'+tags[0].id+'.jpg';
-                   console.log(tagImage);
+                   // console.log(tagImage);
+                   // console.log(tags);
                    questions[i].tagImage = tagImage;
                }
             }
@@ -59,15 +60,21 @@ let questionsApp = new Vue({
                 }else if (duration < 1000*60*60*24){
                     questions[i].duration =
                         (duration/1000/60/60).toFixed(0)+"小时以前";
-                }else {
+                }else if (duration < 1000*60*60*24*30){
                     questions[i].duration =
                         (duration/1000/60/60/24).toFixed(0)+"天以前";
+                }else if (duration < 1000*60*60*24*30*12){
+                    questions[i].duration =
+                        (duration/1000/60/60/24/30).toFixed(0)+"月以前";
+                }else {
+                    questions[i].duration =
+                        (duration/1000/60/60/24/30/12).toFixed(0)+"年以前";
                 }
             }
         }
     },
     created:function () {
-        console.log("执行了方法");
+        // console.log("执行了方法");
         this.loadQuestions();
 
     }
