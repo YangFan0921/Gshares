@@ -1,6 +1,7 @@
 package com.review.shares.portal.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.review.shares.portal.model.Question;
 import com.review.shares.portal.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,13 @@ public class QuestionController {
 
     @GetMapping("/my")
     //@AuthenticationPrincipal获得当前登录用户的详情
-    public List<Question> getMyQuestions(@AuthenticationPrincipal UserDetails user){
-        List<Question> list = questionService.getMyQuestion(user.getUsername());
-        return list;
+    public PageInfo<Question> getMyQuestions(@AuthenticationPrincipal UserDetails user,Integer pageNum){
+        if (pageNum == null){
+            pageNum=1;
+        }
+        Integer pageSize = 8;
+        PageInfo<Question> pageInfo = questionService.getMyQuestion(user.getUsername(),pageNum,pageSize);
+        return pageInfo;
     }
 
 }

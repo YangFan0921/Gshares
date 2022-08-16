@@ -24,8 +24,9 @@ let questionsApp = new Vue({
                 // console.log("成功加载数据");
                 // console.log(r.data);
                 if(r.status == OK){
-                    questionsApp.questions = r.data;
-                    //questionsApp.pageinfo = r.data;
+                    questionsApp.questions = r.data.list;
+                    questionsApp.pageinfo = r.data;
+                    console.log(r.data)
                     //为question对象添加持续时间属性
                     questionsApp.updateDuration();
                     questionsApp.updateTagImage();

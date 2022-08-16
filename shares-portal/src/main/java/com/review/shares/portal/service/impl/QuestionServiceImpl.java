@@ -1,6 +1,8 @@
 package com.review.shares.portal.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.review.shares.portal.exception.ServiceException;
 import com.review.shares.portal.mapper.UserMapper;
 import com.review.shares.portal.model.Question;
@@ -11,6 +13,7 @@ import com.review.shares.portal.service.IQuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.review.shares.portal.service.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     UserMapper userMapper;
 
     @Override
-    public List<Question> getMyQuestion(String username) {
+    public PageInfo<Question> getMyQuestion(String username, Integer pageNum, Integer pageSize) {
         //根据用户名查询用户信息
         User user = userMapper.findUserByUsername(username);
         if (user == null){
@@ -48,13 +51,15 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         query.eq("delete_status",0);
         //      3.设置创建时间降序排序
         query.orderByDesc("createtime");
+        //分页查询的指令
+        PageHelper.startPage(pageNum,pageSize);
         List<Question> list = questionMapper.selectList(query);
         //为每个问题的标签集合赋值
         for (Question question : list){
             List<Tag> tags = tagName2Tags(question.getTagNames());
             question.setTags(tags);
         }
-        return list;
+        return new PageInfo<>(list);
     }
 
     @Autowired

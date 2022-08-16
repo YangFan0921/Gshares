@@ -41,15 +41,15 @@ public class WapperTest {
         System.out.println("ok!");
     }
 
-    @Autowired
-    IQuestionService questionService;
-    @Test
-    void question(){
-        List<Question> list = questionService.getMyQuestion("st2");
-        for (Question question : list){
-            System.out.println(question);
-        }
-    }
+//    @Autowired
+//    IQuestionService questionService;
+//    @Test
+//    void question(){
+//        List<Question> list = questionService.getMyQuestion("st2");
+//        for (Question question : list){
+//            System.out.println(question);
+//        }
+//    }
 
 
 }

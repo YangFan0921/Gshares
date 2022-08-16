@@ -1,5 +1,6 @@
 package com.review.shares.portal.service;
 
+import com.github.pagehelper.PageInfo;
 import com.review.shares.portal.model.Question;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public interface IQuestionService extends IService<Question> {
 
-    List<Question> getMyQuestion(String username);
+    // 查询当前学生的问题列表（包含page等信息）
+    PageInfo<Question> getMyQuestion(String username,Integer pageNum,Integer pageSize);
 
 }
