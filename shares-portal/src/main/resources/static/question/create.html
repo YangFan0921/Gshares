@@ -24,13 +24,14 @@
   <script src="../bower_components/select2/dist/js/select2.min.js"></script>
   <script src="../bower_components/select2/dist/js/i18n/zh-CN.js"></script>
   <script src="../bower_components/vue-select/dist/vue-select.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
 
 </head>
 <body>
 <header class="container-fluid mb-3 bg-light">
   <nav class="navbar navbar-expand-lg   navbar-light bg-light">
     <a class="navbar-brand" href="../index.html">
-        <img alt="达内知道" src="../img/straw_logo_239x80.png" height="33">
+        <img alt="好享" src="../img/straw_logo_239x80.png" height="33">
     </a>
     <button class="navbar-toggler" type="button"
             data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -181,19 +182,7 @@
   </div><!-- 查看邀请码modal-->
 </header>
 <!--引入标签的导航栏-->
-<div class="container-fluid" >
-  <div class="nav font-weight-light">
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>全部</small></a>
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>Java基础</small></a>
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>Java OOP</small></a>
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>Java SE</small></a>
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>WebServer</small></a>
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>二进制</small></a>
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>Web</small></a>
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>MySQL</small></a>
-    <a href="../tag/tag_question.html" class="nav-item nav-link text-info"><small>Servlet</small></a>
-  </div>
-</div>
+  <tagsapp id="tagsApp" :tags="tags"></tagsapp>
 <div class="container-fluid mt-2 mb-1 bg-light" id="app" v-cloak>
   <div class="row">
     <div class="alsrtInfo" style="display: none" :style="{display: displayStsates}" ref="alertMsg">
@@ -202,10 +191,14 @@
   </div>
   <div class="row">
 
-    <div class="col-8">
+    <div class="col-8" id="createQuestionApp">
+
       <h4 class="border-bottom m-2 p-2 font-weight-light"><i class="fa fa-question-circle-o" aria-hidden="true"></i>
         填写问题</h4>
-      <form >
+      <div id="error" class="alert alert-danger " :class="{'d-block' : hasError}" style="display: none">
+        <i class="fa fa-exclamation-triangle"></i> <span v-text="message"></span>
+      </div>
+      <form v-on:submit.prevent="createQuestion">
         <div class="form-group">
           <label for="title">标题:</label>
           <input type="text" class="form-control" id="title" name="title" placeholder="请填写标题3~50字符"
@@ -213,23 +206,25 @@
         </div>
         <div class="form-group">
           <label >请至少选择一个标签：</label>
-          <select multiple class="form-control" name="tags" >
-            <option>Java基础</option>
-            <option>Java OOP</option>
-            <option>Java SE</option>
-            <option>Spring</option>
-            <option>Spring MVC</option>
-          </select>
+<!--          <select multiple class="form-control" name="tags" >-->
+<!--            <option>Java基础</option>-->
+<!--            <option>Java OOP</option>-->
+<!--            <option>Java SE</option>-->
+<!--            <option>Spring</option>-->
+<!--            <option>Spring MVC</option>-->
+<!--          </select>-->
+          <v-select multiple required :options="tags" v-model="selectedTags" placeholder="请选择问题相关的标签"></v-select>
         </div>
         <div class="form-group">
           <label >请选择老师：</label>
-          <select multiple class="form-control" name="teachers" >
-            <option>王克晶</option>
-            <option>范传奇</option>
-            <option>刘国斌</option>
-            <option>张皓岚</option>
-            <option>刘苍松</option>
-          </select>
+<!--          <select multiple class="form-control" name="teachers" >-->
+<!--            <option>王老师</option>-->
+<!--            <option>范老师</option>-->
+<!--            <option>刘老师</option>-->
+<!--            <option>张老师</option>-->
+<!--            <option>苍老师</option>-->
+<!--          </select>-->
+          <v-select multiple required :options="teachers" v-model="selectedTeachers" placeholder="请选择提问的老师"></v-select>
         </div>
         <div class="form-group">
           <!--富文本编辑器 start-->
@@ -498,8 +493,8 @@
   <p class="text-center font-weight-light">达内教育-Java教研部 版权所有<br><a href="http://tedu.cn" rel="nofollow" target="_blank">京ICP备16053980号-3</a>
   </p>
 </footer>
-<script src="../plugins/summernote/summernote.min.js"></script>
-<script src="../plugins/summernote/summernote-zh-CN.min.js"></script>
+<script src="../bower_components/summernote/src/js/summernote.js"></script>
+<script src="../bower_components/summernote/lang/summernote-zh-CN.js"></script>
 <script>
   $(document).ready(function() {
     $('#summernote').summernote({
@@ -512,4 +507,8 @@
   });
 </script>
 </body>
+<script src="../js/utils.js"></script>
+<script src="../js/tags_nav_temp.js"></script>
+<script src="../js/tags_nav.js"></script>
+<script src="../js/createQuestion.js"></script>
 </html>

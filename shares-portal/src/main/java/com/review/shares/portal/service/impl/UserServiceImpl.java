@@ -18,6 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * <p>
@@ -38,6 +44,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserRoleMapper userRoleMapper;
 
     private PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private List<User> teachers = new CopyOnWriteArrayList<>();
+    private Map<String,User> teacherMap = new ConcurrentHashMap<>();
+    private Timer timer = new Timer();
+
+    {
+        //30分钟清空一次缓存 和数据库进行数据的同步
+        //初始化代码块在构造方法前运行
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                synchronized (teachers){
+                    synchronized (teacherMap){
+                        teachers.clear();
+                        teacherMap.clear();
+                    }
+                }
+                System.out.println("缓存已清空");
+            }
+        },1000*60*30,1000*60*30);
+    }
 
     @Override
     public void registerStudent(RegisterVo registerVo) {
@@ -79,5 +105,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (num != 1){
             throw new ServiceException("数据库异常，注册失败！");
         }
+    }
+
+    @Override
+    public List<User> getTeachers() {
+        if (teachers.isEmpty()){
+            synchronized (teachers){
+                if (teachers.isEmpty()){
+                    QueryWrapper<User> query = new QueryWrapper<>();
+                    query.eq("type",1);
+                    teachers = userMapper.selectList(query);
+                    for (User user : teachers){
+                        teacherMap.put(user.getNickname(),user);
+                    }
+                }
+            }
+        }
+        return teachers;
+    }
+
+    @Override
+    public Map<String, User> getTeacherMap() {
+        if (teacherMap.isEmpty()){
+            getTeachers();
+        }
+        return teacherMap;
     }
 }

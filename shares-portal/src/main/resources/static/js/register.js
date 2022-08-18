@@ -11,7 +11,7 @@ let app = new Vue({
     },
     methods:{
         register:function () {
-            console.log('Submit');
+            // console.log('Submit');
             let form=new FormData();
             form.append("inviteCode",this.inviteCode);
             form.append("phone",this.phone);
@@ -32,7 +32,7 @@ let app = new Vue({
                 .then(function(response) {
                     console.log("|"+response.status+"|"+OK+"|");
                     if(response.data == "注册完成！"){
-                        console.log("注册成功");
+                        // console.log("注册成功");
                         // console.log(response.data);
                         app.hasError = false;
                         location.href = '/login.html?register';

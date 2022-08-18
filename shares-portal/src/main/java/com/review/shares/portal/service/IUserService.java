@@ -4,6 +4,9 @@ import com.review.shares.portal.model.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.review.shares.portal.vo.RegisterVo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -16,5 +19,12 @@ public interface IUserService extends IService<User> {
 
     // 注册学生
     void registerStudent(RegisterVo registerVo);
+
+    //所有老师List
+    List<User> getTeachers();
+
+    //所有老师Map
+    Map<String,User> getTeacherMap();
+
 
 }
