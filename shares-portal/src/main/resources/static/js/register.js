@@ -18,7 +18,7 @@ let app = new Vue({
             form.append("nickname",this.nickname);
             form.append("password",this.password);
             form.append("confirm",this.confirm);
-            console.log(form);
+            // console.log(form);
             if(this.password != this.confirm){
                 this.message = "确认密码不一致！";
                 this.hasError = true;

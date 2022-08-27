@@ -6,6 +6,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/shares-portal/pom.xml" />
         <option value="$PROJECT_DIR$/shares-generator/pom.xml" />
+        <option value="$PROJECT_DIR$/shares-resource/pom.xml" />
       </list>
     </option>
   </component>

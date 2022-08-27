@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="shares" />
         <module name="shares-portal" />
+        <module name="shares-resource" />
         <module name="shares-generator" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
       <module name="shares" target="1.8" />
       <module name="shares-generator" target="1.8" />
       <module name="shares-portal" target="1.8" />
+      <module name="shares-resource" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -23,6 +25,7 @@
       <module name="shares" options="-parameters" />
       <module name="shares-generator" options="-parameters" />
       <module name="shares-portal" options="-parameters" />
+      <module name="shares-resource" options="-parameters" />
     </option>
   </component>
 </project>

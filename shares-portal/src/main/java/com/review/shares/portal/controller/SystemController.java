@@ -8,6 +8,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -26,13 +33,29 @@ public class SystemController {
             String msg = result.getFieldError().getDefaultMessage();
             return msg;
         }
-        try {
-            userService.registerStudent(registerVo);
-            return "注册完成！";
-        }catch (SecurityException e){
-            return e.getMessage();
-        }
 
+        userService.registerStudent(registerVo);
+        return "注册完成！";
+    }
+
+    private File resourcePath = new File("D:/upload");
+
+    @PostMapping("/upload/file")
+    public String uploadFile(MultipartFile imageFile) throws IOException {
+        //根据日期获得日期路径
+        String path = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(LocalDate.now());
+        File folder = new File(resourcePath,path);
+        if ( !folder.exists() ){
+            folder.mkdirs();
+        }
+        //获取原始文件名
+        String fileName = imageFile.getOriginalFilename();
+        String ext = fileName.substring(fileName.lastIndexOf("."));
+        String name = UUID.randomUUID().toString()+ext;
+        File file = new File(folder,name);
+        imageFile.transferTo(file);
+        log.debug("保存的实际路径：{}",file.getAbsolutePath());
+        return "OK";
     }
 
 }

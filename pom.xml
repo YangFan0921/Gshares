@@ -22,6 +22,7 @@
     <modules>
         <module>shares-portal</module>
         <module>shares-generator</module>
+        <module>shares-resource</module>
     </modules>
 
     <!--管理版本-->
