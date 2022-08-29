@@ -15,7 +15,7 @@
     </div>
     <button type="submit">上传文件</button>
 </form>
-<img id="image" src=""  alt="">
+<img id="image" src="http://localhost:8899/1.jpg"  alt="">
 </body>
 <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -42,6 +42,7 @@ function uploadImage(file){
     form.append("imageFile",file);
     axios.post("/upload/file",form).then(function (response) {
         console.log(response.data)
+        $("#image").attr("src",response.data)
     }).catch(function (error) {
         console.log(error)
     })

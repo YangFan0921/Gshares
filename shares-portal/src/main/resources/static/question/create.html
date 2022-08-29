@@ -496,15 +496,30 @@
 <script src="../bower_components/summernote/src/js/summernote.js"></script>
 <script src="../bower_components/summernote/lang/summernote-zh-CN.js"></script>
 <script>
+
   $(document).ready(function() {
     $('#summernote').summernote({
       height: 300,
       tabsize: 2,
       lang: 'zh-CN',
-      placeholder: '请输入问题的详细描述...'
+      placeholder: '请输入问题的详细描述...',
+      callbacks:{
+        onImageUpload(files){
+          let file = files[0]
+          let form = new FormData();
+          form.append("imageFile",file)
+          axios.post("/upload/file",form).then(function (response) {
+            let img = new Image();
+            img.src = response.data
+            $("#summernote").summernote("insertNode",img)
+          })
+        }
+      }
     });
     $('select').select2({placeholder:'请选择...'});
   });
+
+
 </script>
 </body>
 <script src="../js/utils.js"></script>

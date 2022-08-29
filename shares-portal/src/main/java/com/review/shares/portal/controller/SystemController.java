@@ -4,6 +4,7 @@ import com.review.shares.portal.service.IUserService;
 import com.review.shares.portal.vo.RegisterVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,11 @@ public class SystemController {
         return "注册完成！";
     }
 
-    private File resourcePath = new File("D:/upload");
+
+    @Value("${shares.resource.path}")
+    private File resourcePath;
+    @Value("${shares.resource.host}")
+    private String resourceHost;
 
     @PostMapping("/upload/file")
     public String uploadFile(MultipartFile imageFile) throws IOException {
@@ -55,7 +60,9 @@ public class SystemController {
         File file = new File(folder,name);
         imageFile.transferTo(file);
         log.debug("保存的实际路径：{}",file.getAbsolutePath());
-        return "OK";
+        String url = resourceHost + "/" + path + "/" +name;
+//        System.out.println(url);
+        return url;
     }
 
 }
