@@ -9,15 +9,19 @@ import com.review.shares.portal.model.Role;
 import com.review.shares.portal.model.User;
 import com.review.shares.portal.mapper.UserMapper;
 import com.review.shares.portal.model.UserRole;
+import com.review.shares.portal.service.IQuestionService;
 import com.review.shares.portal.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.review.shares.portal.vo.RegisterVo;
+import com.review.shares.portal.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -133,4 +137,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         return teacherMap;
     }
+
+    @Resource
+    private IQuestionService questionService;
+    @Override
+    public UserVo getCurrentUserVo(String username) {
+        UserVo userVo = userMapper.findUserVoByUsername(username);
+        int questions = questionService.countQuestionByUserId(userVo.getId());
+        int collections = questionService.collectQuestionByUserId(userVo.getId());
+        userVo.setQuestions(questions);
+        userVo.setCollections(collections);
+        return userVo;
+    }
+
+
+
 }

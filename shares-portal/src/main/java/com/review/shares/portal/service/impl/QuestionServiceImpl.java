@@ -4,25 +4,26 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.review.shares.portal.exception.ServiceException;
-import com.review.shares.portal.mapper.QuestionTagMapper;
-import com.review.shares.portal.mapper.UserMapper;
-import com.review.shares.portal.mapper.UserQuestionMapper;
+import com.review.shares.portal.mapper.*;
 import com.review.shares.portal.model.*;
-import com.review.shares.portal.mapper.QuestionMapper;
 import com.review.shares.portal.service.IQuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.review.shares.portal.service.ITagService;
 import com.review.shares.portal.service.IUserService;
+import com.review.shares.portal.vo.HotQuestionVo;
 import com.review.shares.portal.vo.QuestionVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * <p>
@@ -40,6 +41,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     QuestionMapper questionMapper;
     @Autowired
     UserMapper userMapper;
+
+
 
     @Override
     public PageInfo<Question> getMyQuestion(String username, Integer pageNum, Integer pageSize) {
@@ -144,6 +147,74 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
             log.debug("新增问题和老师的关系:{}",userQuestion);
         }
     }
+
+    @Override
+    public Integer countQuestionByUserId(Integer userId) {
+        QueryWrapper<Question> query = new QueryWrapper<>();
+        query.eq("user_id",userId);
+        query.eq("delete_status",0);
+        Integer count = questionMapper.selectCount(query);
+        return count;
+    }
+
+
+    @Autowired
+    UserCollectMapper userCollectMapper;
+    @Override
+    public Integer collectQuestionByUserId(Integer userId) {
+        QueryWrapper<UserCollect> query = new QueryWrapper<>();
+        query.eq("user_id",userId);
+        Integer count = userCollectMapper.selectCount(query);
+        return count;
+    }
+
+    @Override
+    public List<HotQuestionVo> getHotQuestionList() {
+        List<Question> questions = questionMapper.getHotQuestionList();
+        List<HotQuestionVo> hotQuestionVo = new ArrayList<>();
+        for (int i = 0; i < questions.size(); i++) {
+//            System.out.println("hotQuestionVo的长度:"+hotQuestionVo.size());
+            Question q = questions.get(i);
+//            System.out.println("q:"+q);
+//            HotQuestionVo qv = hotQuestionVo.get(i);
+            HotQuestionVo qv = new HotQuestionVo();
+            Integer countAnswer = questionMapper.countAnswer(q.getId());
+            hotQuestionVo.add(qv);
+//            System.out.println("qv:"+qv);
+            qv.setId(q.getId());
+            qv.setTitle(q.getTitle());
+            qv.setStatus(q.getStatus());
+            qv.setPageViews(q.getPageViews());
+            qv.setCountAnswer(countAnswer);
+//            System.out.println("q.getId:"+q.getId());
+//            System.out.println("hotQuestionVo:"+hotQuestionVo);
+        }
+        return hotQuestionVo;
+    }
+
+
+
+
+    /*
+        有两个集合 A<a>    B<b>
+        有两个类     a       b
+
+                a中的变量对象：id,name,age,sex,hobby,height
+                b中的变量对象：id,name,age,weight
+
+        已知集合A的长度是10且有10条数据
+           集合B是新创建的
+
+        现在想 将A中的id,name,age添加到B里面
+        问 如何添加？
+
+
+
+    */
+
+
+
+
 
 
 

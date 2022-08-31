@@ -3,6 +3,7 @@ package com.review.shares.portal.mapper;
 import com.review.shares.portal.model.Permission;
 import com.review.shares.portal.model.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.review.shares.portal.vo.UserVo;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +34,11 @@ public interface UserMapper extends BaseMapper<User> {
                 " WHERE" +
                 " u.id =#{id}")
         List<Permission> findUserPermissionsByID(Integer id);
+
+        //根据用户名查询UserVo信息
+        @Select("select id,username,nickname from user where username=#{username}")
+        UserVo findUserVoByUsername(String username);
+
+
 
 }

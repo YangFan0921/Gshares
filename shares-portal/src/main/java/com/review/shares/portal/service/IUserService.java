@@ -3,6 +3,7 @@ package com.review.shares.portal.service;
 import com.review.shares.portal.model.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.review.shares.portal.vo.RegisterVo;
+import com.review.shares.portal.vo.UserVo;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,10 @@ public interface IUserService extends IService<User> {
 
     //所有老师Map
     Map<String,User> getTeacherMap();
+
+    //查询用户信息面板数据
+    UserVo getCurrentUserVo(String username);
+
 
 
 }

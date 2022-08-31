@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -50,6 +52,26 @@ public class WapperTest {
 //            System.out.println(question);
 //        }
 //    }
+
+    @Resource
+    IQuestionService questionService;
+    @Test
+    public void count(){
+        int count = questionService.countQuestionByUserId(11);
+        System.out.println(count);
+    }
+
+
+    @Test
+    public void abc(){
+        List<Integer> abc = new ArrayList<>();
+        for (int i = 0; i < abc.size(); i++) {
+            abc.add(1);
+            abc.set(1,2);
+        }
+        abc.add(1);
+        System.out.println(abc.size());
+    }
 
 
 }

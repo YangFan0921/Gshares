@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.review.shares.portal.exception.ServiceException;
 import com.review.shares.portal.model.Question;
 import com.review.shares.portal.service.IQuestionService;
+import com.review.shares.portal.vo.HotQuestionVo;
 import com.review.shares.portal.vo.QuestionVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.soap.Detail;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -65,5 +67,13 @@ public class QuestionController {
             return e.getMessage();
         }
     }
+
+    @GetMapping("/hotquestion")
+    public List<HotQuestionVo> hotQuestions(){
+        List<HotQuestionVo> hotQuestionList = questionService.getHotQuestionList();
+        return hotQuestionList;
+    }
+
+
 
 }
