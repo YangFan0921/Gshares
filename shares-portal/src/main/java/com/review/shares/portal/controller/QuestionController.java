@@ -9,6 +9,7 @@ import com.review.shares.portal.vo.HotQuestionVo;
 import com.review.shares.portal.vo.QuestionVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
@@ -72,6 +73,18 @@ public class QuestionController {
     public List<HotQuestionVo> hotQuestions(){
         List<HotQuestionVo> hotQuestionList = questionService.getHotQuestionList();
         return hotQuestionList;
+    }
+
+    @GetMapping("/teacher")
+    //Spring-Security判断当前登录用户是否拥有权限
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public PageInfo<Question> getteacherQuestion(@AuthenticationPrincipal UserDetails user,Integer pageNum){
+        if (pageNum == null){
+            pageNum = 1;
+        }
+        Integer pageSize = 8;
+        PageInfo<Question> pageInfo = questionService.getTeacherQuestions(user.getUsername(),pageNum,pageSize);
+        return pageInfo;
     }
 
 

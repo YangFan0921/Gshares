@@ -2,6 +2,7 @@ package com.review.shares.portal.service.impl;
 
 import com.review.shares.portal.mapper.UserMapper;
 import com.review.shares.portal.model.Permission;
+import com.review.shares.portal.model.Role;
 import com.review.shares.portal.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -36,6 +38,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         int i = 0;
         for (Permission p : ps){
             auth[i++] = p.getName();
+        }
+        //根据用户id查询用户角色
+        List<Role> roles = userMapper.findUserRolesById(user.getId());
+        auth = Arrays.copyOf(auth,auth.length+roles.size());
+        for (Role role : roles){
+            auth[i++] = role.getName();
         }
         //4.构建UserDetails对象，并对其主要属性赋值
         UserDetails u = org.springframework.security.core.userdetails.User

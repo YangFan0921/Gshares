@@ -33,6 +33,9 @@ public interface IQuestionService extends IService<Question> {
     //获取热点问题
     List<HotQuestionVo> getHotQuestionList();
 
+    //查询登录老师的任务列表
+    PageInfo<Question> getTeacherQuestions(String username,Integer pageNum,Integer pageSize);
+
 
 
 

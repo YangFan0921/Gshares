@@ -20,8 +20,8 @@ Vue.component("userapp", {
                   <div>收藏</div>
                 </a>
                 <a class="list-inline-item mx-3 my-1 text-center" style="pointer-events: none" href="personal/task.html">
-                  <div style="text-decoration: line-through"><strong>0</strong></div>
-                  <div style="text-decoration: line-through">任务</div>
+                  <div><strong>0</strong></div>
+                  <div>任务</div>
                 </a>
             </div>
           </div>

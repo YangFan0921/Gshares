@@ -186,42 +186,23 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
             qv.setStatus(q.getStatus());
             qv.setPageViews(q.getPageViews());
             qv.setCountAnswer(countAnswer);
-//            System.out.println("q.getId:"+q.getId());
 //            System.out.println("hotQuestionVo:"+hotQuestionVo);
         }
         return hotQuestionVo;
     }
 
-
-
-
-    /*
-        有两个集合 A<a>    B<b>
-        有两个类     a       b
-
-                a中的变量对象：id,name,age,sex,hobby,height
-                b中的变量对象：id,name,age,weight
-
-        已知集合A的长度是10且有10条数据
-           集合B是新创建的
-
-        现在想 将A中的id,name,age添加到B里面
-        问 如何添加？
-
-
-
-    */
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public PageInfo<Question> getTeacherQuestions(String username, Integer pageNum, Integer pageSize) {
+        User user = userMapper.findUserByUsername(username);
+        PageHelper.startPage(pageNum,pageSize);
+        List<Question> questions = questionMapper.findTeacherQuestions(user.getId());
+        //为每个问题的标签集合赋值
+        for (Question question : questions){
+            List<Tag> tags = tagName2Tags(question.getTagNames());
+            question.setTags(tags);
+        }
+        return new PageInfo<>(questions);
+    }
 
 
 }

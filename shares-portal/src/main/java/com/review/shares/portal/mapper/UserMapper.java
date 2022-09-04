@@ -1,6 +1,7 @@
 package com.review.shares.portal.mapper;
 
 import com.review.shares.portal.model.Permission;
+import com.review.shares.portal.model.Role;
 import com.review.shares.portal.model.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.review.shares.portal.vo.UserVo;
@@ -39,6 +40,12 @@ public interface UserMapper extends BaseMapper<User> {
         @Select("select id,username,nickname from user where username=#{username}")
         UserVo findUserVoByUsername(String username);
 
+        //根据用户id查询此用户所有的角色
+        @Select("select r.id,r.name from user u " +
+                "left join user_role ur on u.id = ur.user_id " +
+                "left join role r on ur.role_id = r.id " +
+                "where u.id = #{id}")
+        List<Role> findUserRolesById(Integer id);
 
 
 }

@@ -24,12 +24,13 @@
   <script src="bower_components/select2/dist/js/select2.min.js"></script>
   <script src="bower_components/select2/dist/js/i18n/zh-CN.js"></script>
   <script src="bower_components/vue-select/dist/vue-select.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
 </head>
 <body>
 <header class="container-fluid mb-3 bg-light">
 
   <nav class="navbar navbar-expand-lg   navbar-light bg-light">
-    <a class="navbar-brand" href="index.html"> <img alt="达内知道" src="img/GShare_logo_230x80.png" height="33">
+    <a class="navbar-brand" href="/index.html"> <img alt="好享" src="img/GShare_logo_230x80.png" height="33">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -37,7 +38,7 @@
 
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="index.html">首页</a>
+        <a class="nav-item nav-link active" href="/index.html">首页</a>
         <a class="nav-item nav-link active" href="personal/myQuestion.html">提问</a>
         <a class="nav-item nav-link active" href="personal/task.html">任务</a>
         <a class="nav-item nav-link active" href="personal/collect.html">收藏</a>
@@ -169,15 +170,7 @@
 </header>
 
 <!--引入标签的导航栏-->
-<div class="container-fluid">
-  <div class="nav font-weight-light">
-    <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>全部</small></a>
-    <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>Java基础</small></a>
-    <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>Java OOP</small></a>
-    <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>JavaSE</small></a>
-    <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>WebServer</small></a>
-  </div>
-</div>
+<tagsapp id="tagsApp" :tags="tags"></tagsapp>
 <div class="container-fluid bg-light mt-3 mb-1">
   <div class="row">
     <div class="col-sm-12 col-md-8 pb-2 ">
@@ -186,22 +179,22 @@
         <div class="container-fluid">
           <h4 class="border-bottom m-2 p-2 font-weight-light"><i class="fa fa-tasks" aria-hidden="true"></i> 我的任务</h4>
           <div id="questionsApp">
-          <div class="row" style="display: none">
+          <div class="row" style="display: none" v-show="questions == null">
             <div class="alert alert-warning w-100" role="alert">
               抱歉您还没有提问内容， <a href="question/create.html" class="alert-link">您可以点击此处提问</a>，或者点击标签查看其它问答
             </div>
           </div>
-          <div class="media bg-white m-2 p-3" >
+          <div class="media bg-white m-2 p-3" v-for="question in questions">
             <div class="media-body w-50">
               <div class="row">
                 <div class="col-md-12 col-lg-2">
-                  <span class="badge badge-pill badge-warning" style="display: none">未回复</span>
-                  <span class="badge badge-pill badge-info" style="display: none">已回复</span>
-                  <span class="badge badge-pill badge-success">已解决</span>
+                  <span class="badge badge-pill badge-warning" style="display: none" v-show="question.status==0">未回复</span>
+                  <span class="badge badge-pill badge-info" style="display: none" v-show="question.status==1">已回复</span>
+                  <span class="badge badge-pill badge-success" v-show="question.status==2">已解决</span>
                 </div>
                 <div class="col-md-12 col-lg-10">
                   <h5 class="mt-0 mb-1 text-truncate">
-                    <a class="text-dark" href="question/detail.html" >
+                    <a class="text-dark" href="question/detail.html" v-text="question.title" :href="'/question/detail_teacher.html?'+question.id">
                       eclipse 如何导入项目？
                     </a>
                   </h5>
@@ -209,37 +202,46 @@
               </div>
 
               <div class="font-weight-light text-truncate text-wrap text-justify mb-2" style="height: 70px;">
-                <p>
+                <p v-text="question.content">
                   eclipse 如何导入项目？
                 </p>
               </div>
               <div class="row">
                 <div class="col-12 mt-1 text-info">
                   <i class="fa fa-tags" aria-hidden="true"></i>
-                  <a class="text-info badge badge-pill bg-light" href="tag/tag_question.html"><small >Java基础 &nbsp;</small></a>
+                  <a class="text-info badge badge-pill bg-light" href="tag/tag_question.html" v-for="tag in question.tags"><small v-text="tag.name">Java基础 &nbsp;</small></a>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12 text-right">
                   <div class="list-inline mb-1 ">
-                    <small class="list-inline-item" >风继续吹</small>
-                    <small class="list-inline-item"><span>12</span>浏览</small>
-                    <small class="list-inline-item" >13分钟前</small>
+                    <small class="list-inline-item" v-text="question.userNickname">风继续吹</small>
+                    <small class="list-inline-item"><span v-text="question.pageViews">12</span>浏览</small>
+                    <small class="list-inline-item" v-text="question.duration">13分钟前</small>
                   </div>
                 </div>
               </div>
 
             </div>
             <!-- / class="media-body"-->
-            <img src="img/tags/example0.jpg"  class="ml-3 border img-fluid rounded" alt="" width="208" height="116">
+<!--            <img src="img/tags/example0.jpg"  class="ml-3 border img-fluid rounded" alt="" width="208" height="116">-->
+            <img :src="question.tagImage"  class="ml-3 border img-fluid rounded" alt="" width="208" height="116">
           </div>
           <div class="row mt-2">
             <div class="col-6 offset-3">
               <nav aria-label="Page navigation example">
                 <div class="pagination">
-                  <a class="page-item page-link" href="#" >上一页</a>
-                  <a class="page-item page-link " href="#" >1</a>
-                  <a class="page-item page-link" href="#" >下一页</a>
+                  <a class="page-item page-link" href="#"
+                     @click.prevent="loadQuestions(pageinfo.prePage)"
+                     :style="pageinfo.isFirstPage ? 'pointer-events: none;background:#DEDEDE;color:	#FCFCFC':''">上一页</a>
+                  <a class="page-item page-link " href="#"
+                     v-for="num in pageinfo.navigatepageNums"
+                     v-text="num" @click.prevent="loadQuestions(num)"
+                     :class="{'bg-secondary text-light':pageinfo.pageNum==num}">1</a>
+                  <a class="page-item page-link" href="#"
+                     @click.prevent="loadQuestions(pageinfo.nextPage)"
+                     :style="pageinfo.isLastPage ?
+                      'pointer-events: none;background:#DEDEDE;color:	#FCFCFC':''">下一页</a>
                 </div>
               </nav>
             </div>
@@ -252,216 +254,9 @@
     <!-- / class="col-8"-->
     <div class="col-sm-12 col-md-4  p-2">
       <!--个人信息-->
-      <div class="container-fluid font-weight-light">
-        <div class="card">
-          <h5 class="card-header">陈某</h5>
-          <div class="card-body">
-            <div class="list-inline mb-1 ">
-              <a class="list-inline-item mx-3 my-1 text-center">
-                <div><strong>10</strong></div>
-                <div>回答</div>
-              </a>
-              <a class="list-inline-item mx-3 my-1 text-center" href="personal/myQuestion.html">
-                <div><strong>10</strong></div>
-                <div>提问</div>
-              </a>
-              <a class="list-inline-item mx-3 my-1 text-center" href="personal/collect.html">
-                <div><strong>10</strong></div>
-                <div>收藏</div>
-              </a>
-              <a class="list-inline-item mx-3 my-1 text-center" href="personal/task.html">
-                <div><strong>10</strong></div>
-                <div>任务</div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <userapp id="userApp" :user="user"></userapp>
       <!--热点数据-->
-      <div class="container-fluid bg-light mt-5">
-        <h4 class="m-2 p-2 font-weight-light"><i class="fa fa-list" aria-hidden="true"></i> 热点问题</h4>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush">
-          <a href="question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-6 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-
-      </div>
+      <hotquestionapp id="hotQuestion" :hotquestions="hotquestions"></hotquestionapp>
     </div>
     <!-- / class="col-4"-->
   </div>
@@ -473,4 +268,12 @@
   </p>
 </footer>
 </body>
+<script src="js/utils.js"></script>
+<script src="js/tags_nav_temp.js"></script>
+<script src="js/tags_nav.js"></script>
+<script src="js/user_info_temp.js"></script>
+<script src="js/user_info.js"></script>
+<script src="js/hot_question_temp.js"></script>
+<script src="js/hot_question.js"></script>
+<script src="js/index_teacher.js"></script>
 </html>

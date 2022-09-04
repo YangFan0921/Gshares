@@ -2,8 +2,11 @@ package com.review.shares.portal;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.review.shares.portal.mapper.ClassroomMapper;
+import com.review.shares.portal.mapper.QuestionMapper;
+import com.review.shares.portal.mapper.UserMapper;
 import com.review.shares.portal.model.Classroom;
 import com.review.shares.portal.model.Question;
+import com.review.shares.portal.model.Role;
 import com.review.shares.portal.service.IQuestionService;
 import com.review.shares.portal.service.IUserService;
 import com.review.shares.portal.vo.RegisterVo;
@@ -71,6 +74,25 @@ public class WapperTest {
         }
         abc.add(1);
         System.out.println(abc.size());
+    }
+
+
+    @Resource
+    UserMapper userMapper;
+    @Test
+    void role(){
+        List<Role> roles = userMapper.findUserRolesById(3);
+        for (Role role : roles) {
+            System.out.println(role);
+        }
+    }
+
+    @Resource
+    QuestionMapper questionMapper;
+    @Test
+    void teacherList(){
+        List<Question> list = questionMapper.findTeacherQuestions(3);
+        list.forEach(question -> System.out.println(question));
     }
 
 
