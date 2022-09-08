@@ -20,10 +20,11 @@
   <script src="../bower_components/polyfill/dist/polyfill.min.js"></script>
   <script src="../bower_components/summernote/dist/summernote-bs4.js"></script>
   <script src="../bower_components/summernote/dist/lang/summernote-zh-CN.min.js"></script>
-  <script src="../bower_components/vue/dist/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.6/vue.min.js"></script>
   <script src="../bower_components/select2/dist/js/select2.min.js"></script>
   <script src="../bower_components/select2/dist/js/i18n/zh-CN.js"></script>
   <script src="../bower_components/vue-select/dist/vue-select.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
 
 </head>
 <body>
@@ -184,7 +185,7 @@
 <div class="container-fluid bg-white mt-3">
   <div class="row">
     <div class="col-9 px-0 ">
-      <div class="container-fluid bg-light">
+      <div class="container-fluid bg-light"  id="questionApp">
         <div class="row">
           <div class="col-2 px-0  ">
             <div class="container-fluid ">
@@ -214,7 +215,8 @@
             <div class="container-fluid ">
               <div class="row px-0 mb-3">
                 <div class="col-9 px-0">
-                  <a class="badge badge-pill  badge-info mx-1" href="../tag/tag_question.html">Java基础</a>
+                  <a class="badge badge-pill  badge-info mx-1" href="../tag/tag_question.html"
+                     v-for="tag in question.tags" v-text="tag.name">Java基础</a>
                 </div>
                 <div class="col-3 px-0">
                   <div class="row px-0">
@@ -225,21 +227,23 @@
                     </div>
                     <div class="col">
                       <p class="font-weight-light mb-0">浏览</p>
-                      <p class="font-weight-bold mt-1">100</p>
+                      <p class="font-weight-bold mt-1"  v-text="question.pageViews">100</p>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class=" px-0 text-center font-weight-bold" style="font-size: x-large" >
+              <p class=" px-0 text-center font-weight-bold" style="font-size: x-large"
+              v-text="question.title">
                 Java中方法重载和重写的区别
               </p>
 
-              <div class="px-0 container-fluid question-content" >
+              <div class="px-0 container-fluid question-content"
+              v-html="question.content">
                 请问的方法中重写和重载的区别都是什么，如何使用
               </div>
               <p class="text-right px-0 mt-5">
-                <span class="font-weight-light badge badge-primary">张三</span>
-                <span class="font-weight-light badge badge-info">3天前</span>
+                <span class="font-weight-light badge badge-primary" v-text="question.userNickName">张三</span>
+                <span class="font-weight-light badge badge-info" v-text="question.duration">3天前</span>
               </p>
             </div>
 
@@ -250,10 +254,10 @@
         <div class="row">
           <div class="col-12">
             <!--列出所有的答案-->
-            <div class="row mt-5 ml-2">
+            <div class="row mt-5 ml-2" id="answersApp">
               <div class="col-12">
-                <div class="well-sm"><h3>3条回答</h3></div>
-                <div class="card card-default my-5">
+                <div class="well-sm"><h3><span v-text="answers.length">3</span>条回答</h3></div>
+                <div class="card card-default my-5" v-for="answer in answers">
                   <!-- Default panel contents -->
                   <div class="card-header">
                     <div class="row">
@@ -263,10 +267,10 @@
                       </div>
                       <div class="col-8 ">
                         <div class="row">
-                          <span class="ml-3">张三</span>
+                          <span class="ml-3" v-text="answer.userNickName">张三</span>
                         </div>
                         <div class="row">
-                          <span class="ml-3">2天前</span>
+                          <span class="ml-3" v-text="answer.duration">2天前</span>
                         </div>
 
                       </div>
@@ -367,14 +371,14 @@
 
             </div><!--列出所有的答案-end-->
             <!--如果没有回答问题的权限就不显示回答框-->
-            <div class="container-fluid mt-4" id="writeAnswer">
+            <div class="container-fluid mt-4" id="postAnswerApp">
               <h5 class="text-info mb-2"><i class="fa fa-edit"></i>写答案</h5>
               <form action="#" method="post" enctype="application/x-www-form-urlencoded"
-                    class="needs-validation" novalidate>
+                    class="needs-validation" novalidate @submit.prevent="postAnswer">
                 <div class="form-group">
                   <textarea id="summernote" name="content" required ></textarea>
-                  <div class="invalid-feedback">
-                    <h5>回答内容不能为空！</h5>
+                  <div class="invalid-feedback" :class="{'d-block':hasError}">
+                    <h5 v-text="message">回答内容不能为空！</h5>
                   </div>
                 </div>
                 <div class="form-group">
@@ -398,188 +402,27 @@
 
     <div class="col-3">
       <!--相关提问-->
-      <div class="container-fluid bg-light pb-2">
+      <div class="container-fluid bg-light pb-2" id="relatedQuestionApp">
         <h5 class=" py-3 font-weight-light"><i class="fa fa-list mr-1" aria-hidden="true"></i>相关提问</h5>
-        <div class="list-group list-group-flush" >
+        <div class="list-group list-group-flush" v-for="relatedquestion in relatedquestions">
           <a href="../question/detail.html" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
+              <h6 class="mb-1 text-dark" v-text="relatedquestion.title">equals和==的区别是啥</h6>
             </div>
             <div class="row">
               <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
+                <small class="mr-2"><span v-text="relatedquestion.countAnswer">1</span>条回答</small>
+                <small class="text-warning" style="display: none" v-show="relatedquestion.status==0">未回复</small>
+                <small class="text-info" style="display: none" v-show="relatedquestion.status==1">未解决</small>
+                <small class="text-success" v-show="relatedquestion.status==2">已解决</small>
               </div>
               <div class="col-5 text-right">
-                <small>10浏览</small>
+                <small><span v-text="relatedquestion.pageViews">21</span>浏览</small>
               </div>
             </div>
           </a>
         </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="list-group list-group-flush" >
-          <a href="../question/detail.html" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-1 text-dark" >equals和==的区别是啥</h6>
-            </div>
-            <div class="row">
-              <div class="col-7">
-                <small class="mr-2">1条回答</small>
-                <small class="text-warning" style="display: none">未回复</small>
-                <small class="text-info" style="display: none">未解决</small>
-                <small class="text-success">已解决</small>
-              </div>
-              <div class="col-5 text-right">
-                <small>10浏览</small>
-              </div>
-            </div>
-          </a>
-        </div>
+
 
       </div>
     </div>
@@ -604,4 +447,7 @@
   });
 </script>
 </body>
+<script src="../js/utils.js"></script>
+<script src="../js/question_detail.js"></script>
+<script src="../js/related_question.js"></script>
 </html>

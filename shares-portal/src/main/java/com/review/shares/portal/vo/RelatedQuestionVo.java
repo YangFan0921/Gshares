@@ -1,6 +1,9 @@
 package com.review.shares.portal.vo;
 
-public class HotQuestionVo {
+import lombok.Data;
+
+
+public class RelatedQuestionVo {
     //问题id
     private Integer id;
     //问题标题
@@ -39,31 +42,31 @@ public class HotQuestionVo {
     }
 
     @SuppressWarnings("all")
-    public HotQuestionVo setId(final Integer id) {
+    public RelatedQuestionVo setId(final Integer id) {
         this.id = id;
         return this;
     }
 
     @SuppressWarnings("all")
-    public HotQuestionVo setTitle(final String title) {
+    public RelatedQuestionVo setTitle(final String title) {
         this.title = title;
         return this;
     }
 
     @SuppressWarnings("all")
-    public HotQuestionVo setStatus(final Integer status) {
+    public RelatedQuestionVo setStatus(final Integer status) {
         this.status = status;
         return this;
     }
 
     @SuppressWarnings("all")
-    public HotQuestionVo setPageViews(final Integer pageViews) {
+    public RelatedQuestionVo setPageViews(final Integer pageViews) {
         this.pageViews = pageViews;
         return this;
     }
 
     @SuppressWarnings("all")
-    public HotQuestionVo setCountAnswer(final Integer countAnswer) {
+    public RelatedQuestionVo setCountAnswer(final Integer countAnswer) {
         this.countAnswer = countAnswer;
         return this;
     }
@@ -72,8 +75,8 @@ public class HotQuestionVo {
     @SuppressWarnings("all")
     public boolean equals(final Object o) {
         if (o == this) return true;
-        if (!(o instanceof HotQuestionVo)) return false;
-        final HotQuestionVo other = (HotQuestionVo) o;
+        if (!(o instanceof RelatedQuestionVo)) return false;
+        final RelatedQuestionVo other = (RelatedQuestionVo) o;
         if (!other.canEqual((Object) this)) return false;
         final Object this$id = this.getId();
         final Object other$id = other.getId();
@@ -95,7 +98,7 @@ public class HotQuestionVo {
 
     @SuppressWarnings("all")
     protected boolean canEqual(final Object other) {
-        return other instanceof HotQuestionVo;
+        return other instanceof RelatedQuestionVo;
     }
 
     @Override
@@ -123,7 +126,7 @@ public class HotQuestionVo {
     }
 
     @SuppressWarnings("all")
-    public HotQuestionVo(final Integer id, final String title, final Integer status, final Integer pageViews, final Integer countAnswer) {
+    public RelatedQuestionVo(final Integer id, final String title, final Integer status, final Integer pageViews, final Integer countAnswer) {
         this.id = id;
         this.title = title;
         this.status = status;
@@ -132,7 +135,7 @@ public class HotQuestionVo {
     }
 
     @SuppressWarnings("all")
-    public HotQuestionVo() {
+    public RelatedQuestionVo() {
     }
     //</editor-fold>
 }

@@ -5,6 +5,7 @@ import com.review.shares.portal.model.Question;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.review.shares.portal.vo.HotQuestionVo;
 import com.review.shares.portal.vo.QuestionVo;
+import com.review.shares.portal.vo.RelatedQuestionVo;
 
 import java.util.List;
 
@@ -33,9 +34,14 @@ public interface IQuestionService extends IService<Question> {
     //获取热点问题
     List<HotQuestionVo> getHotQuestionList();
 
+    //获取相关提问
+    List<RelatedQuestionVo> getRelatedQuestionList(String username);
+
     //查询登录老师的任务列表
     PageInfo<Question> getTeacherQuestions(String username,Integer pageNum,Integer pageSize);
 
+    //根据id获取问题详情
+    Question getQuestionById(Integer id);
 
 
 

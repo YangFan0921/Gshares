@@ -25,9 +25,14 @@ public interface QuestionMapper extends BaseMapper<Question> {
     Integer countAnswer(Integer questId);
 
     @Select("select q.* from question q " +
-            "left join user_question uq on uq.question_id = q.id " +
-            "where q.user_id = #{userId} or uq.user_id=#{userId} " +
-            "order by q.createtime desc ")
+            " left join user_question uq on uq.question_id = q.id " +
+            " where q.user_id = #{userId} or uq.user_id=#{userId} " +
+            " order by q.createtime desc ")
     List<Question> findTeacherQuestions(Integer userId);
+
+    @Select("select * from question where user_id=#{userId} and delete_status=0 order by page_views desc limit 0,10")
+    List<Question> getRelatedQuestionList(Integer userId);
+
+
 
 }
