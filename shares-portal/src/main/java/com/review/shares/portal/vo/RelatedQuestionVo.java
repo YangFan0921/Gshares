@@ -2,8 +2,10 @@ package com.review.shares.portal.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 
-public class RelatedQuestionVo {
+
+public class RelatedQuestionVo implements Serializable {
     //问题id
     private Integer id;
     //问题标题

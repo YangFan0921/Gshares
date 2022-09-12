@@ -2,6 +2,7 @@ package com.review.shares.portal.service;
 
 import com.review.shares.portal.model.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.review.shares.portal.vo.CommentVo;
 
 /**
  * <p>
@@ -13,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICommentService extends IService<Comment> {
 
+    //添加评论
+    Comment saveComment(CommentVo commentVo,String username);
 }

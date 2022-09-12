@@ -1,6 +1,8 @@
 package com.review.shares.portal.vo;
 
-public class HotQuestionVo {
+import java.io.Serializable;
+
+public class HotQuestionVo implements Serializable {
     //问题id
     private Integer id;
     //问题标题

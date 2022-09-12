@@ -5,7 +5,7 @@ let relatedQuestionApp = new Vue({
     },
     created(){
         axios.get("/v1/questions/relatedquestion").then(function (response) {
-            console.log(response.data)
+            // console.log(response.data)
             relatedQuestionApp.relatedquestions = response.data
         }).catch(function (error) {
             console.log(error)

@@ -52,6 +52,7 @@ let postAnswerApp = new Vue({
                 answersApp.answers.push(answer)
                 $("#summernote").summernote("reset")
                 postAnswerApp.hasError = false
+                answer.duration = "刚刚"
             }).catch(function (error) {
                 console.log(error)
             })
@@ -71,6 +72,7 @@ let answersApp = new Vue({
         loadAnswers(){
             let qid = location.search;
             if (!qid){
+                alert("必须指定问题id")
                 return
             }
             qid = qid.substring(1)
@@ -85,6 +87,34 @@ let answersApp = new Vue({
             }).catch(function (error) {
                 console.log(error)
             })
+        },
+        postComment(answerId){
+            console.log("answerId:"+answerId)
+            let textarea = $("#addComment"+answerId+" textarea")
+            let content = textarea.val()
+            if(!content){
+                return
+            }
+            let form = new FormData()
+            form.append("answerId",answerId)
+            form.append("content",content)
+            axios.post("/v1/comments",form).then(function (response) {
+                // console.log(response.data)
+                textarea.val("")
+                $("#addComment"+answerId).collapse("hide")
+                let comment = response.data
+                let answers = answersApp.answers
+                for (let i = 0; i < answers.length; i++) {
+                    if (answers[i].id == answerId){
+                        answers[i].comments.push(comment)
+                        return
+                    }
+                }
+
+            }).catch(function (error) {
+                console.log(error)
+            })
         }
     },
 })
+
