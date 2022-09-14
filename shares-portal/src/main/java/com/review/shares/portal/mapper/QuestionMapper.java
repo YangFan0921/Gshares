@@ -2,7 +2,9 @@ package com.review.shares.portal.mapper;
 
 import com.review.shares.portal.model.Question;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,6 +34,9 @@ public interface QuestionMapper extends BaseMapper<Question> {
 
     @Select("select * from question where user_id=#{userId} and delete_status=0 order by page_views desc limit 0,10")
     List<Question> getRelatedQuestionList(Integer userId);
+
+    @Update("update question set status=#{status} where id=#{questionId}")
+    Integer updateStatus(@Param("status") Integer status,@Param("questionId") Integer questionId);
 
 
 

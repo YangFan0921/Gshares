@@ -50,4 +50,38 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
         return comment;
     }
+
+    @Transactional
+    @Override
+    public boolean removeCommentById(Integer id,String username) {
+        User user = userMapper.findUserByUsername(username);
+        if (user.getType() == 1){
+            int num = commentMapper.deleteById(id);
+            return num == 1;
+        }
+        Comment comment = commentMapper.selectById(id);
+        if (user.getId() == comment.getUserId()){
+            int num = commentMapper.deleteById(id);
+            return num == 1;
+        }
+        throw new ServiceException("您不能删除此评论！");
+    }
+
+    @Transactional
+    @Override
+    public Comment updateCommentById(Integer commentId,CommentVo commentVo,String username) {
+        User user = userMapper.findUserByUsername(username);
+        Comment comment = commentMapper.selectById(commentId);
+        if (user.getType() == 1 || user.getId() == comment.getUserId()){
+            Integer num = commentMapper.updateCommentContentById(commentVo.getContent(), commentId);
+            comment.setContent(commentVo.getContent());
+            if (num!=1){
+                throw new ServiceException("服务器忙");
+            }
+            return comment;
+        }
+        throw new ServiceException("您不能修改此评论！");
+    }
+
+
 }

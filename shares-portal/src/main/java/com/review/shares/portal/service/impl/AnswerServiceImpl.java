@@ -2,9 +2,11 @@ package com.review.shares.portal.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.review.shares.portal.exception.ServiceException;
+import com.review.shares.portal.mapper.QuestionMapper;
 import com.review.shares.portal.mapper.UserMapper;
 import com.review.shares.portal.model.Answer;
 import com.review.shares.portal.mapper.AnswerMapper;
+import com.review.shares.portal.model.Question;
 import com.review.shares.portal.model.User;
 import com.review.shares.portal.service.IAnswerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -56,4 +58,25 @@ public class AnswerServiceImpl extends ServiceImpl<AnswerMapper, Answer> impleme
         List<Answer> answers = answerMapper.findAnswersWithCommentsByQuestionId(questionId);
         return answers;
     }
+
+    @Resource
+    private QuestionMapper questionMapper;
+    @Override
+    @Transactional
+    public boolean accept(Integer answerId) {
+        Answer answer = answerMapper.selectById(answerId);
+        if (answer == null || answer.getAcceptStatus() == 1 ){
+            return false;
+        }
+        int num = answerMapper.updateAcceptStatus(1,answerId);
+        if (num!=1){
+            throw new ServiceException("服务器忙");
+        }
+        num = questionMapper.updateStatus(Question.SOLVED,answer.getQuestId());
+        if (num!=1){
+            throw new ServiceException("服务器忙");
+        }
+        return true;
+    }
+
 }

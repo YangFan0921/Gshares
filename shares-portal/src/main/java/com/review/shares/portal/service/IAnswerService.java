@@ -22,4 +22,7 @@ public interface IAnswerService extends IService<Answer> {
     //根据问题id查询回答
     List<Answer> getAnswersByQuestionId(Integer questionId);
 
+    //采纳答案
+    boolean accept(Integer answerId);
+
 }

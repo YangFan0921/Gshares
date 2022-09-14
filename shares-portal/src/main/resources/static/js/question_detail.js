@@ -110,11 +110,57 @@ let answersApp = new Vue({
                         return
                     }
                 }
-
+            }).catch(function (error) {
+                console.log(error)
+            })
+        },
+        removeComment(commentId,index,comments){
+            if (!commentId){
+                return
+            }
+            axios("/v1/comments/"+commentId+"/delete").then(function (response) {
+                // console.log(response.data)
+                if (response.data != "删除成功"){
+                    alert(response.data)
+                }else {
+                    // 1为删除1个
+                    comments.splice(index,1)
+                }
+            }).catch(function (error) {
+                console.log(error)
+            })
+        },
+        updateComment(commentId,answerId,index,comments) {
+            let textarea = $("#editComment"+commentId+ " textarea")
+            // console.log(textarea)
+            let content = textarea.val()
+            if (!content) {
+                return
+            }
+            let form = new FormData()
+            form.append("answerId",answerId)
+            form.append("content",content)
+            axios.post("/v1/comments/"+commentId+"/update",form).then(function (response) {
+                // console.log(response.data)
+                //comments[index] = response.data
+                // set(需要改的内容，需要改的位置，改成的内容)
+                Vue.set(comments,index,response.data)
+                $("#editCommemt"+commentId).collapse("hide")
+            }).catch(function (error) {
+                console.log(error)
+            })
+        },
+        answerSolved(answerId){
+            if (!answerId){
+                return
+            }
+            axios.get("/v1/answers/"+answerId+"/solved").then(function (response) {
+                console.log(response.data)
             }).catch(function (error) {
                 console.log(error)
             })
         }
+
     },
 })
 

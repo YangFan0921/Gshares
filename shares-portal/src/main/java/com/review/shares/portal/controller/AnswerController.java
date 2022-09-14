@@ -50,4 +50,15 @@ public class AnswerController {
         List<Answer> answers = answerService.getAnswersByQuestionId(id);
         return answers;
     }
+
+    @GetMapping("/{answerId}/solved")
+    public String solved(@PathVariable Integer answerId){
+        boolean isAccept = answerService.accept(answerId);
+        if (isAccept){
+            return "采纳成功";
+        }else {
+            return "采纳失败,检查回答存在并且没有被采纳过";
+        }
+    }
+
 }
