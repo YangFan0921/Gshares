@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上载演示</title>
+</head>
+<body>
+<form id="demoForm" method="post"
+      enctype="multipart/form-data"
+      action="/upload/file" >
+    <div>
+        <label>上传文件
+            <input id="imageFile" type="file" name="imageFile">
+        </label>
+    </div>
+    <button type="submit">上传文件</button>
+</form>
+<img id="image" src="http://localhost:8899/1.jpg"  alt="">
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+
+
+
+$("#demoForm").submit(function () {
+    let files = document.getElementById("imageFile").files
+    if (files.length>0){
+        for (let i=0;i<files.length;i++){
+            let file = files[i]
+            uploadImage(file)
+        }
+    }else {
+        alert("请选择文件后再提交!")
+    }
+    return false;
+})
+
+function uploadImage(file){
+    let form = new FormData()
+    //imageFile与控制器方法uploadImage的参数名称对应
+    form.append("imageFile",file);
+    axios.post("/upload/file",form).then(function (response) {
+        console.log(response.data)
+        $("#image").attr("src",response.data)
+    }).catch(function (error) {
+        console.log(error)
+    })
+}
+
+</script>
+</html>
