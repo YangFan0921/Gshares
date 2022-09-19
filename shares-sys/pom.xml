@@ -53,13 +53,20 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>cn.tedu</groupId>-->
-        <!--            <artifactId>knows-commons</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.review</groupId>
+            <artifactId>shares-commons</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
 
     </dependencies>
-
 
 
 </project>

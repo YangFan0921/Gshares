@@ -6,6 +6,7 @@ spring:
   cloud:
     nacos:
       discovery:
+        # 注册到nacos必须指定nacos所在的路径
         server-addr: localhost:8848
     gateway:
       discovery:
@@ -20,3 +21,14 @@ spring:
           predicates: # 路由的路径配置
             # 访问 localhost:9000/image/xxxxx -> 访问resource-server服务中的内容
             - Path=/image/**
+
+        - id: gateway-sys
+          uri: lb://sys-service
+          predicates:
+            - Path=/v1/**
+
+        - id: gateway-faq
+          uri: lb://faq-service
+          predicates:
+            - Path=/v2/**
+

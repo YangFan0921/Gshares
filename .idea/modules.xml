@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares.iml" filepath="$PROJECT_DIR$/shares.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-client/shares-client.iml" filepath="$PROJECT_DIR$/shares-client/shares-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shares-commons/shares-commons.iml" filepath="$PROJECT_DIR$/shares-commons/shares-commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shares-faq/shares-faq.iml" filepath="$PROJECT_DIR$/shares-faq/shares-faq.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-generator/shares-generator.iml" filepath="$PROJECT_DIR$/shares-generator/shares-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-portal/shares-portal.iml" filepath="$PROJECT_DIR$/shares-portal/shares-portal.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-resource/shares-resource.iml" filepath="$PROJECT_DIR$/shares-resource/shares-resource.iml" />

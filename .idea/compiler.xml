@@ -8,10 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="shares-resource" />
-        <module name="shares-generator" />
         <module name="shares-client" />
         <module name="shares-sys" />
         <module name="shares-portal" />
+        <module name="shares-generator" />
+        <module name="shares-commons" />
+        <module name="shares-faq" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
@@ -19,6 +21,8 @@
       <module name="gateway" target="1.8" />
       <module name="shares" target="1.8" />
       <module name="shares-client" target="1.8" />
+      <module name="shares-commons" target="1.8" />
+      <module name="shares-faq" target="1.8" />
       <module name="shares-generator" target="1.8" />
       <module name="shares-portal" target="1.8" />
       <module name="shares-resource" target="1.8" />
@@ -30,6 +34,8 @@
       <module name="gateway" options="-parameters" />
       <module name="shares" options="" />
       <module name="shares-client" options="-parameters" />
+      <module name="shares-commons" options="-parameters" />
+      <module name="shares-faq" options="-parameters" />
       <module name="shares-generator" options="-parameters" />
       <module name="shares-portal" options="-parameters" />
       <module name="shares-resource" options="-parameters" />
