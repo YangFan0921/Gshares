@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="shares-resource" />
         <module name="shares-client" />
+        <module name="shares-auth" />
         <module name="shares-sys" />
         <module name="shares-portal" />
         <module name="shares-generator" />
@@ -20,6 +21,7 @@
     <bytecodeTargetLevel>
       <module name="gateway" target="1.8" />
       <module name="shares" target="1.8" />
+      <module name="shares-auth" target="1.8" />
       <module name="shares-client" target="1.8" />
       <module name="shares-commons" target="1.8" />
       <module name="shares-faq" target="1.8" />
@@ -33,6 +35,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="gateway" options="-parameters" />
       <module name="shares" options="" />
+      <module name="shares-auth" options="-parameters" />
       <module name="shares-client" options="-parameters" />
       <module name="shares-commons" options="-parameters" />
       <module name="shares-faq" options="-parameters" />

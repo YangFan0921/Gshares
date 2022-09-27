@@ -4,9 +4,7 @@ package com.review.shares.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.review.shares.commons.exception.ServiceException;
-import com.review.shares.commons.model.Classroom;
-import com.review.shares.commons.model.User;
-import com.review.shares.commons.model.UserRole;
+import com.review.shares.commons.model.*;
 import com.review.shares.sys.mapper.ClassroomMapper;
 import com.review.shares.sys.mapper.UserMapper;
 import com.review.shares.sys.mapper.UserRoleMapper;
@@ -14,10 +12,12 @@ import com.review.shares.sys.service.IUserService;
 import com.review.shares.sys.vo.RegisterVo;
 import com.review.shares.sys.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -47,11 +47,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserRoleMapper userRoleMapper;
 
     private PasswordEncoder encoder = new BCryptPasswordEncoder();
-    private List<User> teachers = new CopyOnWriteArrayList<>();
+//    private List<User> teachers = new CopyOnWriteArrayList<>();
+
     private Map<String,User> teacherMap = new ConcurrentHashMap<>();
     private Timer timer = new Timer();
 
-    {
+    /*{
         //30分钟清空一次缓存 和数据库进行数据的同步
         //初始化代码块在构造方法前运行
         timer.schedule(new TimerTask() {
@@ -66,7 +67,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 System.out.println("缓存已清空");
             }
         },1000*60*30,1000*60*30);
-    }
+    }*/
 
     @Override
     @Transactional
@@ -111,9 +112,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
     }
 
+    @Resource
+    private RedisTemplate<String,List<User>> redisTemplate;
     @Override
     public List<User> getTeachers() {
-        if (teachers.isEmpty()){
+        /*if (teachers.isEmpty()){
             synchronized (teachers){
                 if (teachers.isEmpty()){
                     QueryWrapper<User> query = new QueryWrapper<>();
@@ -124,6 +127,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                     }
                 }
             }
+        }*/
+        List<User> teachers = redisTemplate.opsForValue().get("teachers");
+        if(teachers==null || teachers.isEmpty()){
+            QueryWrapper<User> query = new QueryWrapper<>();
+            query.eq("type",1);
+            teachers = userMapper.selectList(query);
+            redisTemplate.opsForValue().set("teachers",teachers);
+            System.out.println(redisTemplate.opsForValue().get("teachers"));
+            System.out.println("老师缓存已加载！");
         }
         return teachers;
     }
@@ -140,10 +152,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public UserVo getCurrentUserVo(String username) {
         UserVo userVo = userMapper.findUserVoByUsername(username);
-
         return userVo;
     }
 
+    @Override
+    public User getUserByUsername(String username) {
+        User user = userMapper.findUserByUsername(username);
+        return user;
+    }
+
+    @Override
+    public List<Role> getRolesById(Integer id) {
+        return userMapper.findUserRolesById(id);
+    }
+
+    @Override
+    public List<Permission> getPermissionsById(Integer id) {
+        return userMapper.findUserPermissionsByID(id);
+    }
 
 
 }

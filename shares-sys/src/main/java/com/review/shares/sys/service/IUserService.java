@@ -2,6 +2,8 @@ package com.review.shares.sys.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.review.shares.commons.model.Permission;
+import com.review.shares.commons.model.Role;
 import com.review.shares.commons.model.User;
 import com.review.shares.sys.vo.RegisterVo;
 import com.review.shares.sys.vo.UserVo;
@@ -30,6 +32,15 @@ public interface IUserService extends IService<User> {
 
     //查询用户信息面板数据
     UserVo getCurrentUserVo(String username);
+
+    //根据用户名获取用户信息
+    User getUserByUsername(String username);
+
+    //根据用户id查询所有角色
+    List<Role> getRolesById(Integer id);
+
+    //根据用户id查询所有权限
+    List<Permission> getPermissionsById(Integer id);
 
 
 
