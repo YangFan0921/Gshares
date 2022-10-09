@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>身份判断页</title>
+</head>
+<body>
+
+
+<script src="bower_components/jquery/dist/jquery.js" ></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.6/vue.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+<script>
+  $(function () {
+      let token = window.localStorage.getItem("accessToken")
+      console.log(token)
+      axios.get("http://localhost:9000/v1/home",{params:{"accessToken":token}}).then(function (response) {
+          // console.log(response.data)
+          alert(response.data)
+          location.href=response.data
+      })
+
+
+  })
+</script>
+</body>
+</html>

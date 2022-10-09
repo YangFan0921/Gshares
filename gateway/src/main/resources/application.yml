@@ -32,3 +32,8 @@ spring:
           predicates:
             - Path=/v2/**
 
+        - id: gateway-auth
+          uri: lb://auth-service
+          predicates:
+            - Path=/oauth/**
+
