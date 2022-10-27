@@ -4,7 +4,7 @@ let relatedQuestionApp = new Vue({
         relatedquestions:{},
     },
     created(){
-        axios.get("/v1/questions/relatedquestion").then(function (response) {
+        axios.get("http://localhost:9000/v2/questions/relatedquestion",{params:{"accessToken":token}}).then(function (response) {
             // console.log(response.data)
             relatedQuestionApp.relatedquestions = response.data
         }).catch(function (error) {

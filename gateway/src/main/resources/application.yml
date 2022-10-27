@@ -37,3 +37,8 @@ spring:
           predicates:
             - Path=/oauth/**
 
+        - id: gateway-search
+          uri: lb://search-service
+          predicates:
+            - Path=/v3/**
+

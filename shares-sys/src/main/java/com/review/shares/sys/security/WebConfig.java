@@ -24,9 +24,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Resource
     private AuthInterceptor authInterceptor;
 
+    //注册
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(demoInterceptor).addPathPatterns("/v1/auth/demo");
-        registry.addInterceptor(authInterceptor).addPathPatterns("/v1/home");
+        registry.addInterceptor(authInterceptor).addPathPatterns("/v1/home","/v1/users/me");
     }
 }

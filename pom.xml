@@ -33,6 +33,8 @@
         <module>shares-commons</module>
         <module>shares-faq</module>
         <module>shares-auth</module>
+        <module>shares-search</module>
+        <module>kafka</module>
     </modules>
 
     <dependencies>

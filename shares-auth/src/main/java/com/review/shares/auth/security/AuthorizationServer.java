@@ -75,8 +75,8 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
         services.setTokenEnhancer(chain);
         //设置令牌有效期 单位秒(1小时)
         services.setAccessTokenValiditySeconds(3600);
-        //设置令牌刷新最大时间(3天)
-        services.setRefreshTokenValiditySeconds(3600*72);
+        //设置令牌刷新最大时间(1小时)
+        services.setRefreshTokenValiditySeconds(3600);
         //设置客户端详情
         services.setClientDetailsService(clientDetailsService);
         return services;

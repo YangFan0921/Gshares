@@ -13,7 +13,7 @@ let questionApp = new Vue({
             if (!qid){
                 return
             }
-            axios.get("/v1/questions/"+qid).then(function (response){
+            axios.get("http://localhost:9000/v2/questions/"+qid).then(function (response){
                 questionApp.question = response.data
                 addDuration(questionApp.question)
             })
@@ -46,7 +46,8 @@ let postAnswerApp = new Vue({
             let form = new FormData()
             form.append("questionId",qid)
             form.append("content",content)
-            axios.post("/v1/answers",form).then(function (response) {
+            form.append("accessToken",token)
+            axios.post("http://localhost:9000/v2/answers",form).then(function (response) {
                 // console.log(response.data)
                 let answer = response.data
                 answersApp.answers.push(answer)
@@ -77,7 +78,7 @@ let answersApp = new Vue({
             }
             qid = qid.substring(1)
             // console.log(qid)
-            axios.get("/v1/answers/question/"+qid).then(function (response) {
+            axios.get("http://localhost:9000/v2/answers/question/"+qid).then(function (response) {
                 answersApp.answers = response.data
                 // console.log(answersApp.answers)
                 let answers = answersApp.answers;
@@ -98,7 +99,8 @@ let answersApp = new Vue({
             let form = new FormData()
             form.append("answerId",answerId)
             form.append("content",content)
-            axios.post("/v1/comments",form).then(function (response) {
+            form.append("accessToken",token)
+            axios.post("http://localhost:9000/v2/comments",form).then(function (response) {
                 // console.log(response.data)
                 textarea.val("")
                 $("#addComment"+answerId).collapse("hide")
@@ -118,7 +120,7 @@ let answersApp = new Vue({
             if (!commentId){
                 return
             }
-            axios("/v1/comments/"+commentId+"/delete").then(function (response) {
+            axios("http://localhost:9000/v2/comments/"+commentId+"/delete",{params:{"accessToken":token}}).then(function (response) {
                 // console.log(response.data)
                 if (response.data != "删除成功"){
                     alert(response.data)
@@ -140,7 +142,8 @@ let answersApp = new Vue({
             let form = new FormData()
             form.append("answerId",answerId)
             form.append("content",content)
-            axios.post("/v1/comments/"+commentId+"/update",form).then(function (response) {
+            form.append("accessToken",token)
+            axios.post("http://localhost:9000/v2/comments/"+commentId+"/update",form).then(function (response) {
                 // console.log(response.data)
                 //comments[index] = response.data
                 // set(需要改的内容，需要改的位置，改成的内容)
@@ -154,7 +157,7 @@ let answersApp = new Vue({
             if (!answerId){
                 return
             }
-            axios.get("/v1/answers/"+answerId+"/solved").then(function (response) {
+            axios.get("http://localhost:9000/v2/answers/"+answerId+"/solved",{params:{"accessToken":token}}).then(function (response) {
                 console.log(response.data)
             }).catch(function (error) {
                 console.log(error)

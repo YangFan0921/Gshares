@@ -5,6 +5,7 @@
     <title>身份判断页</title>
 </head>
 <body>
+    <h4>正在跳转中...</h4>
 
 
 <script src="bower_components/jquery/dist/jquery.js" ></script>
@@ -14,10 +15,10 @@
 <script>
   $(function () {
       let token = window.localStorage.getItem("accessToken")
-      console.log(token)
+      // console.log(token)
       axios.get("http://localhost:9000/v1/home",{params:{"accessToken":token}}).then(function (response) {
           // console.log(response.data)
-          alert(response.data)
+          //alert(response.data)
           location.href=response.data
       })
 

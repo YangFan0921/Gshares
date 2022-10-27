@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kafka/kafka.iml" filepath="$PROJECT_DIR$/kafka/kafka.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares.iml" filepath="$PROJECT_DIR$/shares.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-auth/shares-auth.iml" filepath="$PROJECT_DIR$/shares-auth/shares-auth.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-client/shares-client.iml" filepath="$PROJECT_DIR$/shares-client/shares-client.iml" />
@@ -11,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/shares-generator/shares-generator.iml" filepath="$PROJECT_DIR$/shares-generator/shares-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-portal/shares-portal.iml" filepath="$PROJECT_DIR$/shares-portal/shares-portal.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-resource/shares-resource.iml" filepath="$PROJECT_DIR$/shares-resource/shares-resource.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shares-search/shares-search.iml" filepath="$PROJECT_DIR$/shares-search/shares-search.iml" />
       <module fileurl="file://$PROJECT_DIR$/shares-sys/shares-sys.iml" filepath="$PROJECT_DIR$/shares-sys/shares-sys.iml" />
     </modules>
   </component>

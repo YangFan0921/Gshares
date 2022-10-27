@@ -37,8 +37,8 @@
     </div>
 
     <div class="form-inline my-2 my-lg-0" id="searchApp">
-      <input class="form-control form-control-sm mr-sm-2 rounded-pill" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-sm btn-outline-secondary my-2 my-sm-0 rounded-pill" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+      <input class="form-control form-control-sm mr-sm-2 rounded-pill" type="search" placeholder="Search" aria-label="Search" v-model="key">
+      <button class="btn btn-sm btn-outline-secondary my-2 my-sm-0 rounded-pill" type="button" v-on:click="search"><i class="fa fa-search" aria-hidden="true"></i></button>
     </div>
     <a type="button" class="btn btn-outline-primary btn-sm mx-2" href="question/create.html">我要提问</a>
     <div id="noticeCount">
@@ -304,7 +304,6 @@
 </div>
 <!--底部-->
 <footer class="container-fluid  bg-light mt-1 py-3">
-  <p class="text-center font-weight-light">达内教育-Java教研部 版权所有<br><a href="http://tedu.cn" rel="nofollow" target="_blank">京ICP备16053980号-3</a>
   </p>
 </footer>
 </body>
@@ -313,6 +312,7 @@
 <script src="js/index.js"></script>
 <script src="js/user_info.js"></script>
 <script src="js/hot_question.js"></script>
+<script src="js/search_app.js"></script>
 
 
 </html>

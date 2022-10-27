@@ -3,8 +3,9 @@ let userApp = new Vue({
     data:{
         user:{},
     },
+
     created(){
-        axios.get("/v1/users/me").then(function (response){
+        axios.get("http://localhost:9000/v1/users/me",{params:{"accessToken":token}}).then(function (response){
             userApp.user = response.data
             // console.log(response.data)
         }).catch(function (error){

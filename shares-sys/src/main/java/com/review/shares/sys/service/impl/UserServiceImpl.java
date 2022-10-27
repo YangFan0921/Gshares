@@ -148,10 +148,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return teacherMap;
     }
 
-
+    @Resource
+    private RestTemplate restTemplate;
     @Override
     public UserVo getCurrentUserVo(String username) {
         UserVo userVo = userMapper.findUserVoByUsername(username);
+        String url = "http://faq-service/v2/questions/count?userId={1}";
+        Integer num = restTemplate.getForObject(url,Integer.class,userVo.getId());
+        userVo.setQuestions(num);
+        userVo.setCollections(0);
         return userVo;
     }
 

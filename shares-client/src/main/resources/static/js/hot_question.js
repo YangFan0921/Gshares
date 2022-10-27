@@ -4,7 +4,7 @@ let hotQuestionApp = new Vue({
         hotquestions:{},
     },
     created(){
-        axios.get("/v1/questions/hotquestion").then(function (response){
+        axios.get("http://localhost:9000/v2/questions/hotquestion").then(function (response){
             hotQuestionApp.hotquestions = response.data;
             // console.log(response.data);
         }).catch(function (error){
